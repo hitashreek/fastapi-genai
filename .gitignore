@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE / Editor settings
+.vscode/
+.idea/
+
+# Environment variables & secrets (recommended for FastAPI apps)
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db

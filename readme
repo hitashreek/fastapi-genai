@@ -1,0 +1,3 @@
+- python -m venv venv
+- source venv/Scripts/activate [bcz here source "/d/React/Hitesh Choudhary/FastAPI-foundation/venv/Scripts/activate" venv onwards path]
+- uvicorn 01-fastapi-foundation:app --reload
