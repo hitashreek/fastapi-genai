@@ -1,17 +1,17 @@
 from pydantic import BaseModel, field_validator
 
-class PincodeRequest(BaseModel):
+class PincodeRequest(BaseModel):        # BaseModel → lets you create Pydantic models
     pincode: str
     
     # pincode must be exactly 6 digits
-    @field_validator("pincode")
+    @field_validator("pincode")         # field_validator → lets you add your own validation rules
     @classmethod
     def validate_pincode(cls, value):
         if len(value) != 6 or not value.isdigit():
             raise ValueError("Pincode must be exactly 6 digit")
-        return value
+        return value  # The 'value' passed validation. Keep it.
     
-class LocationResponse(BaseModel):
+class LocationResponse(BaseModel):   # standard format of your response
     pincode: str
     city: str
     state: str
@@ -39,3 +39,5 @@ class BulkResponse(BaseModel):
     not_found: int
     results: list[LocationResponse]
     missing: list[str]
+
+# This code is basically defining what data your API accepts, how it validates that data, and what data it sends back.
