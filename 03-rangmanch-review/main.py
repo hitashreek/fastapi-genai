@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from database import create_tables
+from routes.reviews import router as reviews_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # Lifespan runs code during the application's startup and shutdown
@@ -25,6 +26,8 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Register all review-related routes with the FastAPI application.
+app.include_router(reviews_router)
 
 @app.get("/")
 def root():
