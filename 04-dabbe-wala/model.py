@@ -29,7 +29,7 @@ class OrderCreate(SQLModel):
     
     
 # Schema for updating an order's status
-class OrderUpdateStatus(SQLModel):
+class OrderUpdate(SQLModel):
     status: Optional[OrderStatus] = None
     delivery_address: Optional[str] = None
     
@@ -40,4 +40,3 @@ class StatusLog(SQLModel):
     new_status: str
     changed_at: datetime
     
-
