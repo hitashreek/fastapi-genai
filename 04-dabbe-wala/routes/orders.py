@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from database import get_session
-from model import Order, OrderCreate, OrderUpdate, StatusLog, OrderStatus
+from models import Order, OrderCreate, OrderUpdate, StatusLog, OrderStatus
 from sqlmodel import Session, select
 from datetime import datetime
 
