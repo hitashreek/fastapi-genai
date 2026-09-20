@@ -25,7 +25,7 @@ def daily_summary(
             select(func.count(Order.id)).where(
                 Order.created_at >= start,
                 Order.created_at <= end,
-                Order.status == status)
+                Order.order_status == status)
             ).one()
         summary[status.value] = count
         total += count
