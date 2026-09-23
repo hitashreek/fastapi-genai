@@ -30,7 +30,10 @@ class BookRead(SQLModel):
     price: int
     is_sold: bool
     user_id: int
-    
+
+class BookUpdate(SQLModel):
+    price: Optional[int] = None
+    is_sold: Optional[bool] = None    
 
 from models.user import User
 Book.model_rebuild()
