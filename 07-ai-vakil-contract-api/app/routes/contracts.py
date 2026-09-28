@@ -5,6 +5,7 @@ from config import ALLOWED_EXTENSIONS, MAX_FILE_SIZE_MB, UPLOAD_DIR
 from service.document_parser import extract_text
 from models import Contract
 from database import contracts_collection
+from bson import ObjectId
 
 router = APIRouter(
     prefix="/contracts",
@@ -56,3 +57,29 @@ async def upload_contract(file: UploadFile = File(...)):
         "contract": contract_data.model_dump(),
         "id": contract_data.id,
     }
+    
+@router.get("/")
+async def list_contracts():
+    """
+    List all uploaded contracts.
+    """
+    contracts = []
+    for doc in contracts_collection.find({}, {"text_content": 0}):  # "text_content": 0 is to remove the text_content from the response
+        contract = Contract(**doc)  # MongoDB document → Pydantic Contract
+        contract.id = str(doc["_id"])  # Convert MongoDB _id (ObjectId) to string and assign it to contract.id    
+        contracts.append(contract.model_dump())  # Pydantic (contract) model → Python dictionary
+    return {"contracts": contracts}
+
+@router.get("/{contract_id}")
+async def get_contract(contract_id: str):
+    """
+    Retrieve a specific contract by its ID.
+    """
+    doc = contracts_collection.find_one({"_id": ObjectId(contract_id)})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Contract not found")
+    
+    contract = Contract(**doc)
+    contract.id = str(doc["_id"])
+    return {"contract": contract.model_dump()}  
+    
