@@ -1,0 +1,14 @@
+services:
+  mongodb:
+    image: mongo:latest # Think of an image as a ready-made package containing MongoDB
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mypassword
+    volumes: # Where the volume is used/mounted
+      - mongodb_data:/data/db
+
+volumes: # The volume is defined/created
+  mongodb_data:
