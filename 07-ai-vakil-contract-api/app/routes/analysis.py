@@ -54,6 +54,8 @@ def get_analysis(analysis_id: str):
 
     if not analysis:
         raise HTTPException(status_code=404, detail="Analysis not found")
+    
+    analysis["id"] = str(analysis.pop("_id"))
 
     return {
         "analysis": analysis
@@ -73,7 +75,7 @@ def list_analyses():
             for k, v in obj.items():
                 if k == '_id':
                     new['id'] = str(v)
-                else:
+                elif k != "id":
                     new[k] = _convert_obj(v)
             return new
         if isinstance(obj, ObjectId):
