@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from database import init_db
 from routes.contracts import router as contract_router
+from routes.analysis import router as analysis_router
 
 app = FastAPI(
     title="Vakil Contract API",
@@ -23,10 +24,11 @@ async def root():
             "GET /contracts/{id}": "Retrieve details of a specific contract by ID",
             "POST /analysis/analyse/{contract_id}": "Analyze a contract using AI and return insights",
             "GET /analysis/{analysis_id}": "Retrieve the results of a specific analysis by ID",
-            "GET /analysis/contract/{contract_id}": "Retrieve a list of all analyses performed for a specific contract",
+            "GET /analysis/contract/{contract_id}": "Retrieve a list of all analysis performed for a specific contract",
         }
     }
     
 app.include_router(contract_router)
+app.include_router(analysis_router)
     
     
