@@ -3,12 +3,10 @@ from service.prompt import CONTRACT_ANALYSIS_PROMPT
 from models import AnalysisResult, ClauseAnalysis, RiskFlag
 from google import genai
 
-GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+client = genai.Client()  # client is an object to communicate between pyhton code (user) and Gemini
 
-client = genai.Client()
-
-async def analyze_contract(contract_id: str, text_content: str):
-    prompt = CONTRACT_ANALYSIS_PROMPT.format(contract_text=text_content[:15000])
+async def analyze_contract(contract_id: str, text_content: str): #
+    prompt = CONTRACT_ANALYSIS_PROMPT.format(contract_text=text_content[:15000])  # takes the first 15,000 characters
 
     interaction = client.interactions.create(
         model="gemini-3.5-flash",
@@ -16,12 +14,12 @@ async def analyze_contract(contract_id: str, text_content: str):
     )
 
     response_text = interaction.output_text
-    print("Raw response from Gemini API:", response_text)
+    # print("Raw response from Gemini API:", response_text)
 
     if isinstance(response_text, str):
         try:
-            data = json.loads(response_text)
-        except json.JSONDecodeError:
+            data = json.loads(response_text)  # json.loads() converts a JSON string to a Python dictionary
+        except json.JSONDecodeError:  # except json.JSONDecodeError is raised when the JSON string is not valid
             data = response_text
     else:
         data = response_text
@@ -33,15 +31,15 @@ async def analyze_contract(contract_id: str, text_content: str):
     else:
         raw_text = str(data)
 
-    raw_text = raw_text.strip()
+    raw_text = raw_text.strip()  # strip leading and trailing whitespace
 
     if raw_text.startswith("```json"):
-        raw_text = raw_text[7:]
+        raw_text = raw_text[7:]  # [7:] to remove the first 7 characters
     if raw_text.startswith("```"):
         raw_text = raw_text[3:]
     if raw_text.endswith("```"):
         raw_text = raw_text[:-3]
-    raw_text = raw_text.strip()
+    raw_text = raw_text.strip()  # raw_text should be clean JSON
 
     analysis_data = json.loads(raw_text)
 
