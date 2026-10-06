@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from datetime import date
 
@@ -15,3 +16,10 @@ class WeatherResponseModel(BaseModel):
     humidity: float
     rain_chance: float
 
+class PlaceModel(BaseModel):
+    name: str
+    description: str
+    category: str
+    rating: float
+    estimated_time_hours: float
+    entry_fee: Optional[float] = None
