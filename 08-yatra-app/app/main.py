@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.routes.planner import router as planner_router
+from app.routes.stream import router as stream_router
 
 app = FastAPI(
     title="Yatra Planner API",
@@ -21,3 +22,4 @@ async def root():
     }
     
 app.include_router(planner_router)
+app.include_router(stream_router)
