@@ -35,7 +35,7 @@ async def fetch_weather(
         response.raise_for_status()
         data = response.json()
         
-        forcasts = []
+        forecasts = []
 
         for day in data['forecast']['forecastday']:
             forecast = WeatherResponseModel(
@@ -46,7 +46,7 @@ async def fetch_weather(
                 humidity=day['day']['avghumidity'],
                 rain_chance=day['day']['daily_chance_of_rain']
             )
-            forcasts.append(forecast)
+            forecasts.append(forecast)
 
-        set_cache(cache_key, forcasts, ttl=3600)  # Cache for 1 hour
-        return forcasts  
+        set_cache(cache_key, forecasts, ttl=3600)  # Cache for 1 hour
+        return forecasts  

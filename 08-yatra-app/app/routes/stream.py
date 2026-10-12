@@ -16,18 +16,18 @@ router = APIRouter(
 
 def _jsonable(value):
     if isinstance(value, BaseModel):
-        return _jsonable(value.model_dump())
+        return _jsonable(value.model_dump())  # .model_dump() converts value into a dictionary.
     if isinstance(value, (date, datetime)):
         return value.isoformat()
     if isinstance(value, list):
-        return [_jsonable(item) for item in value]
+        return [_jsonable(item) for item in value] # _jsonable convert data into JSON-compatible data.
     if isinstance(value, dict):
         return {key: _jsonable(item) for key, item in value.items()}
     return value
 
 
 def format_sse(data: str, event: str = None) -> str:
-    json_data = json.dumps(_jsonable(data))
+    json_data = json.dumps(_jsonable(data)) # json.dumps = JSON data that has already been converted into text. _jsonable = JSON-compatible(Python data that can be converted into JSON data)
     return f"data: {json_data}\n\n" if event is None else f"event: {event}\ndata: {json_data}\n\n"
 
 async def stream_generator(travel_request: TravelRequestModel):
