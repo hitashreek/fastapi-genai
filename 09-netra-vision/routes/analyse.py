@@ -29,7 +29,30 @@ async def process_single_image(file: UploadFile):
 
     return result
     
-   
+
+@router.post("/batch")
+async def analyse_images(files: list[UploadFile] = File(...)):
+    """
+    Endpoint to upload multiple images for batch disease detection.
+    """
+    results = []
+    for file in files:
+        if not file.content_type.startswith("image/"):
+            raise HTTPException(status_code=400, detail=f"Invalid file type for {file.filename}. Please upload an image.")
+        
+        result = await process_single_image(file)
+        results.append({
+            "filename": file.filename,
+            "result": result,
+            "content_type": file.content_type
+        })
+    
+    return {
+        "message": "Batch image processing completed.",
+        "results": results
+    }
+    
+    
 @router.post("/")
 async def analyse_image(file: UploadFile = File(...)):
     """
@@ -49,3 +72,5 @@ async def analyse_image(file: UploadFile = File(...)):
         "content_type": file.content_type,
         "message": "Image received and processed for disease detection."
     }
+    
+    
